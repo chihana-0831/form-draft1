@@ -20,6 +20,9 @@ include('../_parts/header.php');
     <?= h($email); ?></p>
 
     <form action="welcome.php" method="post">
+        <input type="hidden" name="name" value="<?php echo $name; ?>">
+        <input type="hidden" name="email" value="<?php echo $email; ?>">
+        <input type="hidden" name="password" value="<?php echo $password?>">
         <button>Conform</button>
     </form> 
 <?php endif; ?>
