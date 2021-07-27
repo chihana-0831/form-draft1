@@ -1,13 +1,13 @@
 <?php
 
 require('../_parts/functions.php');
-
+require('../_parts/dbconnect.php');
 include('../_parts/header.php');
 
 ?>
 
 <h3>Sign-in to Your Account</h3>
-<form action="welcome.php" method="post">
+<form action="home.php" method="post">
     <label for="userid">ID : </label>
     <input type="text" name="userid" required> <br>
     <label for="password">Password : </label>

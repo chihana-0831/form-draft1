@@ -1,21 +1,25 @@
 <?php
 
 require('../_parts/functions.php');
+require('../_parts/dbconnect.php');
 
-$name = $_POST["name"];
-$email = $_POST["email"];
-$password = $_POST["password"];
+if (!empty($_POST['done'])){
+    unset($_SESSION['posts']);
+    header("Location: start.php");
+} 
+
 
 include('../_parts/header.php');
 
 ?>
 
-<h3>Welcome, <?= $name ?>! You are registered!</h3>
-<h4>Your Information</h4>
-<p>Name : <?= $name ?></p>
-<p>Email address : <?= h($email); ?></p>
+<form action="" method="POST">
+    <input type="hidden" name="done" value="done">
+    <h3>Welcome, <?= $_SESSION['posts']['name'] ?>!</h3>
+    <h3>You are registered!</h3>
 
-<p><a href="signin.php">Home</a></p>
+    <button type="submit">Home</button>
+</form>
 
 <?php
 include('./_parts/footer.php');
