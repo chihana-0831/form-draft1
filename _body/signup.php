@@ -4,23 +4,27 @@ require('../_parts/functions.php');
 require('../_parts/dbconnect.php');
 include('../_parts/header.php');
 
-if (!empty($_POST)) {
 
+if (!empty($_POST)) {
     $name = $_POST['name'];
     $email = $_POST['email'];
     $userid = $_POST['userid'];
     $password = $_POST['password'];
 
     if (trim($name) === ""){
+        echo "Name is not filled.<br />";
         $error['name'] = "blank";
     }
     if (trim($email) === ""){
+        echo "Email is not filled.<br />";
         $error['email'] = "blank";
     }
     if (trim($userid) === ""){
+        echo "UserID is not filled.<br />";
         $error['userid'] = "blank";
     }
     if (trim($password) === ""){
+        echo "Password is not filled.<br />";
         $error['password'] = "blank";
     }
 
@@ -29,34 +33,45 @@ if (!empty($_POST)) {
         $error['email'] = "invalid";
     }
     
-    if (preg_match($pattern_pass, $password)){
-        $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-    } else {
-        echo 'Password must be at least 8 characters containing both alphabetic character and number.<br />';
-        $error['password'] = "invalid";
-    }
-
     if (!isset($error)){
-        $user = $pdo->prepare('SELECT COUNT(*) as cnt FROM users WHERE email=?');
-        $user->execute(array($_POST['email']));
-        $record = $user->fetch();
-        if ($record['cnt'] > 0){
-            $error['email'] = 'double';
+
+        if (preg_match($pattern_pass, $password)){
+            echo "pattern matched";
+            $password = password_hash($password, PASSWORD_DEFAULT);
+        } else {
+            echo 'Password must be at least 8 characters containing both alphabetic character and number.<br />';
+            $error['password'] = "invalid";
         }
-    }
 
-    if (!isset($error)){
-        $_SESSION['posts'] = $_POST;
-        header('location: confirm.php');
-        exit();
-    }
+        if (!isset($error)){
+            echo "check email";
+            $user = $pdo->prepare('SELECT COUNT(*) as cnt FROM users WHERE email=?');
+            $user->execute(array($_POST['email']));
+            $record = $user->fetch();
+            if ($record['cnt'] > 0){
+                echo "email not double";
+                $error['email'] = 'double';
+                echo "Email you entered is already registered.";
+            }
+        }
+
+        if (!isset($error)){
+            echo "no error at all";
+            $_SESSION['name'] = $name;
+            $_SESSION['email'] = $email;
+            $_SESSION['userid'] = $userid;
+            $_SESSION['password'] = $password;
+            header('location: confirm.php');
+            exit();
+        }
+    } 
+
 } 
-
 ?>
-
 
 <h3>Creat Your Account</h3>
 <form action="" method="post">
+    <!-- <input type="hidden" name="signup" value="signedup"> -->
     <label for="name">Name :</label>
     <input type="text" name="name" required placeholder="Enter your fullname"> <br>
     <label for="email">Email Address :</label>
@@ -65,7 +80,7 @@ if (!empty($_POST)) {
     <input type="text" name="userid" required> <br>
     <label for ="password">Password :</label>
     <input type="text" name="password" required minlength="8"> <br>
-    <button type="submit"　name="subm">Submit</button>
+    <button type="submit">Submit</button>
 </form>
 
 
