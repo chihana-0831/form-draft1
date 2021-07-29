@@ -6,7 +6,6 @@ include('../_parts/header.php');
 
 // echo $_SERVER[http_referer];
 
-
 if (!empty($_POST['signin'])) {
     $userid = $_POST['userid'];
     $password = $_POST['password'];
@@ -33,14 +32,13 @@ if (!empty($_POST['signin'])) {
         }
 
         if (empty($row['userid'])){
-            echo "The UserID you entered is not correct.";
+            echo "The UserID you entered is not registered or correct.";
         } 
-        
-        var_dump($password);
-        var_dump($row['password']);
 
         if (password_verify($password, $row['password'])) {
             // session_regenerate_id(true);
+            $_SESSION['name'] = $row['name'];
+            $_SESSION['email'] = $row['email'];
             $_SESSION['password'] = $row['password'];
             $_SESSION['userid'] = $_POST['userid'];
             header("location: home.php");

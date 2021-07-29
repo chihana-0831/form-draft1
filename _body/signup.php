@@ -4,6 +4,7 @@ require('../_parts/functions.php');
 require('../_parts/dbconnect.php');
 include('../_parts/header.php');
 
+var_dump($_POST);
 
 if (!empty($_POST)) {
     $name = $_POST['name'];
@@ -44,19 +45,16 @@ if (!empty($_POST)) {
         }
 
         if (!isset($error)){
-            echo "check email";
             $user = $pdo->prepare('SELECT COUNT(*) as cnt FROM users WHERE email=?');
             $user->execute(array($_POST['email']));
             $record = $user->fetch();
             if ($record['cnt'] > 0){
-                echo "email not double";
                 $error['email'] = 'double';
                 echo "Email you entered is already registered.";
             }
         }
 
         if (!isset($error)){
-            echo "no error at all";
             $_SESSION['name'] = $name;
             $_SESSION['email'] = $email;
             $_SESSION['userid'] = $userid;
@@ -68,6 +66,10 @@ if (!empty($_POST)) {
 
 } 
 ?>
+
+<!-- <?php
+echo $_POST;
+?> -->
 
 <h3>Creat Your Account</h3>
 <form action="" method="post">

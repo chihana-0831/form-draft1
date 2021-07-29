@@ -4,10 +4,10 @@ require('../_parts/functions.php');
 require('../_parts/dbconnect.php');
 include('../_parts/header.php');
 
-if (empty($_SESSION['posts'])){
-    header('location: signup.php');
-    exit();
-}
+// if (empty($_SESSION['posts'])){
+//     header('location: signup.php');
+//     exit();
+// }
 
 $name = $_SESSION['name'];
 $email = $_SESSION['email'];
